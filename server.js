@@ -41,8 +41,11 @@ async function imageToBase64(imageUrl) {
 
 async function imageToBase64(imageUrl) {
   try {
+    
     const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
+    
     const base64Image = Buffer.from(response.data, "binary").toString("base64");
+    
     const contentType = response.headers["content-type"];
 
     return `${base64Image}`;
