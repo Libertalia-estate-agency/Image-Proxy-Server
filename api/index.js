@@ -73,6 +73,13 @@ app.post("/convert", async (req, res) => {
   res.json({ bytes: base64Image });
 });
 
+// Start the server locally
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server is running locally at http://localhost:${PORT}`);
+  });
+}
+
 /**
  * Start Server
  */
