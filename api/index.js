@@ -78,7 +78,8 @@ app.post("/convert", async (req, res) => {
   const base64Image = await imageToBase64(imageUrl);
   if (!base64Image) return res.status(500).json({ error: "Failed to convert image" });
 
-  res.json({ bytes: base64Image });
+  res.send(base64Image);
+  //res.json({ base64Image });
 });
 
 // Start the server locally
