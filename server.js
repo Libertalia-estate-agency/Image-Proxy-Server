@@ -39,6 +39,10 @@ async function imageToBase64(imageUrl) {
 } 
  */
 
+app.get("/", (req, res) => {
+  res.send("<h1>Welcome to the Image Proxy Server</h1><p>Use the <code>/convert</code> endpoint to convert images to Base64.</p>");
+});
+
 async function imageToBase64(imageUrl) {
   try {
     
