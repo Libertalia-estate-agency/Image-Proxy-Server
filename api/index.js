@@ -76,6 +76,13 @@ app.post("/convert", async (req, res) => {
 /**
  * Start Server
  */
+// Export the Express app for Vercel
+module.exports = app;
+
+/**
+ * 
 app.listen(PORT, () => {
   console.log(`Proxy server running at http://localhost:${PORT}`);
 });
+ * 
+ */
