@@ -2,10 +2,13 @@ const express = require("express");
 const axios = require("axios");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const sharp = require("sharp");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Increase payload limit to handle large images
+app.use(express.json({ limit: "100mb" }));
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -56,9 +59,19 @@ async function imageToBase64(imageUrl) {
     
     const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
     
-    const base64Image = Buffer.from(response.data, "binary").toString("base64");
+    //const base64Image = Buffer.from(response.data, "binary").toString("base64");
     
     const contentType = response.headers["content-type"];
+
+    let imageBuffer = Buffer.from(response.data, "binary");
+    // Auto-rotate and ensure landscape orientation
+        const processedImageBuffer = await sharp(imageBuffer)
+            .rotate() // Auto-rotate based on EXIF data
+            .resize({ width: 800, height: 600, fit: "cover" }) // Ensure landscape
+            .toBuffer();
+
+  const base64Image = processedImageBuffer.toString("base64");
+
 
     return `${base64Image}`;
   } catch (error) {
@@ -79,9 +92,38 @@ app.post("/convert", async (req, res) => {
   const base64Image = await imageToBase64(imageUrl);
   if (!base64Image) return res.status(500).json({ error: "Failed to convert image" });
 
-  res.send(base64Image);
+  res.json({ bytes: base64Image });
   //res.json({ base64Image });
 });
+
+app.post("/convert-multiple", async (req, res) => {
+  const { imageUrls } = req.body; // Expecting an array of image URLs
+
+  if (!imageUrls || !Array.isArray(imageUrls) || imageUrls.length === 0) {
+    return res.status(400).json({ error: "At least one image URL is required" });
+  }
+
+  try {
+    // Convert each image URL to Base64
+    const base64Images = await Promise.all(
+      imageUrls.map(async (url) => {
+        try {
+          const base64 = await imageToBase64(url);
+          return { url, base64 }; // Return both the URL and converted Base64 string
+        } catch (error) {
+          console.error(`Failed to convert image: ${url}`, error.message);
+          return { url, error: "Failed to convert image" };
+        }
+      })
+    );
+
+    res.json({ images: base64Images });
+  } catch (error) {
+    console.error("Error processing images:", error.message);
+    res.status(500).json({ error: "Failed to convert images" });
+  }
+});
+
 
 // Start the server locally
 if (require.main === module) {
