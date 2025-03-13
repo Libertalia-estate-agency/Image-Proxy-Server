@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 5000;
 
 // Increase payload limit to handle large images
 app.use(express.json({ limit: "100mb" }));
-app.use(cors());
+app.use(cors({ origin :'true' }));
 app.use(bodyParser.json());
 
 
