@@ -130,7 +130,7 @@ app.post("/converter", async (req, res) => {
 
 app.post("/convert-multiple", async (req, res) => {
   const { imageUrls } = req.body; // Expecting an array of image URLs
-  //console.log("IMAGE URLS ::: " + JSON.stringify(imageUrls));
+  console.log("IMAGE URLS ::: " + JSON.stringify(imageUrls));
 
 
   if (!imageUrls || !Array.isArray(imageUrls) || imageUrls.length === 0) {
@@ -142,7 +142,7 @@ app.post("/convert-multiple", async (req, res) => {
     const base64Images = await Promise.all(
       imageUrls.map(async (url) => {
         try {
-          const base64 = await pictureToBase64(url);
+          const base64 = await imageToBase64(url);
           //console.log("url :::: " + JSON.stringify(url));
           //console.log("base64 :::: " + JSON.stringify(base64));
 
