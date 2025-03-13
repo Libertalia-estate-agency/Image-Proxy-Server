@@ -128,9 +128,9 @@ app.post("/converter", async (req, res) => {
   //res.json({ base64Image });
 });
 
-app.post("/convert-multiple", async (req, res) => {
+app.post("/convertMultiple", async (req, res) => {
   const { imageUrls } = req.body; // Expecting an array of image URLs
-  console.log("IMAGE URLS ::: " + JSON.stringify(imageUrls));
+  //console.log("IMAGE URLS ::: " + JSON.stringify(imageUrls));
 
 
   if (!imageUrls || !Array.isArray(imageUrls) || imageUrls.length === 0) {
