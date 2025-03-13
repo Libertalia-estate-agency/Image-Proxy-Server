@@ -1,0 +1,32 @@
+[debug] [2025-03-13T23:05:47.529Z] ----------------------------------------------------------------------
+[debug] [2025-03-13T23:05:47.533Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js login
+[debug] [2025-03-13T23:05:47.534Z] CLI Version:   13.29.1
+[debug] [2025-03-13T23:05:47.534Z] Platform:      win32
+[debug] [2025-03-13T23:05:47.534Z] Node Version:  v18.20.5
+[debug] [2025-03-13T23:05:47.535Z] Time:          Fri Mar 14 2025 01:05:47 GMT+0200 (South Africa Standard Time)
+[debug] [2025-03-13T23:05:47.536Z] ----------------------------------------------------------------------
+[debug] 
+[info] i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+ 
+[info] i  To change your data collection preference at any time, run `firebase logout` and log in again. 
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=1055379338&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+[info] 
+[info] Waiting for authentication...
+[debug] [2025-03-13T23:07:00.406Z] ----------------------------------------------------------------------
+[debug] [2025-03-13T23:07:00.408Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js login
+[debug] [2025-03-13T23:07:00.409Z] CLI Version:   13.29.1
+[debug] [2025-03-13T23:07:00.410Z] Platform:      win32
+[debug] [2025-03-13T23:07:00.410Z] Node Version:  v18.20.5
+[debug] [2025-03-13T23:07:00.411Z] Time:          Fri Mar 14 2025 01:07:00 GMT+0200 (South Africa Standard Time)
+[debug] [2025-03-13T23:07:00.411Z] ----------------------------------------------------------------------
+[debug] 
+[info] i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+ 
+[info] i  To change your data collection preference at any time, run `firebase logout` and log in again. 
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=280852385&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+[info] 
+[info] Waiting for authentication...
