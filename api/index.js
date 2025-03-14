@@ -3,9 +3,12 @@ const axios = require("axios");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const sharp = require("sharp");
+const compression = require("compression"); // Import compression
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.use(compression()); // Enable Gzip compression
 
 // Increase payload limit to handle large images
 app.use(express.json({ limit: "100mb" }));
