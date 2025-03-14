@@ -152,32 +152,21 @@ app.post("/convertMultiple", async (req, res) => {
     return res.status(400).json({ error: "At least one image URL is required" });
   }
 
-  // Initialize an empty string to store the concatenated JSON objects
-  let base64Images = '';
-
-  // Use Promise.all to process all the image URLs
-  await Promise.all(
-    imageUrls.map(async (url) => {
-      try {
-        const base64 = await imageToBase64(url); // Convert each image URL to Base64
-        // Concatenate each image's base64 into a string of individual JSON objects
-        base64Images += `{ "bytes": "${base64}" }, `;
-      } catch (error) {
-        console.error(`Failed to convert image: ${url}`, error.message);
-        // If an error occurs, return an error message formatted as a JSON object
-        base64Images += `{ "error": "Failed to convert image" }, `;
-      }
-    })
+  // First, map the imageUrls to promises (async function returns promises)
+  const base64Images = await Promise.all(
+  imageUrls.map(async (url) => {
+    const base64 = await pictureToBase64(url); // Fetch base64 for each image
+    return base64;  // Return only the base64 value
+  })
   );
 
-  // Remove the trailing comma and space
-  base64Images = base64Images.slice(0, -2);
+  // Join the base64 values into a single comma-separated string
+  const base64String = base64Images.join(',');
 
-  // Send the concatenated string as the response
-  res.send(base64Images);
-  }  
-);
+  // Send the response as a JSON object
+  res.json (base64Images);
 
+});
 
 app.post("/converter-multiple", async (req, res) => {
   const { imageUrls } = req.body; // Expecting an array of image URLs
