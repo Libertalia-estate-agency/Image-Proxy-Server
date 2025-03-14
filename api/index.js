@@ -3,17 +3,10 @@ const axios = require("axios");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const sharp = require("sharp");
-//const compression = require("compression"); // Import compression
-const shrinkRay = require("shrink-ray-current"); // Brotli & Gzip compression
-
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-//app.use(compression()); // Enable Gzip compression
-
-
-app.use(shrinkRay()); // Enable Brotli & Gzip compression
 
 // Increase payload limit to handle large images
 app.use(express.json({ limit: "100mb" }));
@@ -159,29 +152,31 @@ app.post("/convertMultiple", async (req, res) => {
     return res.status(400).json({ error: "At least one image URL is required" });
   }
 
-  try {
-    // Convert each image URL to Base64
-    const base64Images = await Promise.all(
-      imageUrls.map(async (url) => {
-        try {
-          const base64 = await imageToBase64(url);
-          //console.log("url :::: " + JSON.stringify(url));
-          //console.log("base64 :::: " + JSON.stringify(base64));
+  // Initialize an empty string to store the concatenated JSON objects
+  let base64Images = '';
 
-          return { bytes: base64 }; 
-        } catch (error) {
-          console.error(`Failed to convert image: ${url}`, error.message);
-          return { url, error: "Failed to convert image" };
-        }
-      })
-    );
+  // Use Promise.all to process all the image URLs
+  await Promise.all(
+    imageUrls.map(async (url) => {
+      try {
+        const base64 = await imageToBase64(url); // Convert each image URL to Base64
+        // Concatenate each image's base64 into a string of individual JSON objects
+        base64Images += `{ "bytes": "${base64}" }, `;
+      } catch (error) {
+        console.error(`Failed to convert image: ${url}`, error.message);
+        // If an error occurs, return an error message formatted as a JSON object
+        base64Images += `{ "error": "Failed to convert image" }, `;
+      }
+    })
+  );
 
-    res.json(base64Images);
-  } catch (error) {
-    console.error("Error processing images:", error.message);
-    res.status(500).json({ error: "Failed to convert images" });
-  }
-});
+  // Remove the trailing comma and space
+  base64Images = base64Images.slice(0, -2);
+
+  // Send the concatenated string as the response
+  res.send(base64Images);
+  }  
+);
 
 
 app.post("/converter-multiple", async (req, res) => {
