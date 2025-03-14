@@ -174,7 +174,7 @@ app.post("/convertMultiple", async (req, res) => {
   base64Images = base64Images.slice(0, -2);
 
   // Send the concatenated string as the response
-  res.send(base64Images);
+  res.json(base64Images);
   }  
 );
 
