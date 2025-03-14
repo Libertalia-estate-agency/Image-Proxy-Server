@@ -60,7 +60,14 @@ app.get("/", (req, res) => {
 async function imageToBase64(imageUrl) {
   try {
     
-    const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
+    const response = await axios.get(imageUrl, { 
+      responseType: "arraybuffer", 
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Access-Control-Allow-Origin': '*'
+      },
+    });
     
     //const base64Image = Buffer.from(response.data, "binary").toString("base64");
     
@@ -86,7 +93,14 @@ async function imageToBase64(imageUrl) {
 async function pictureToBase64(imageUrl) {
   try {
     
-    const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
+    const response = await axios.get(imageUrl, { 
+      responseType: "arraybuffer",
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Access-Control-Allow-Origin': '*'
+      } 
+    });
     
     //const base64Image = Buffer.from(response.data, "binary").toString("base64");
     
