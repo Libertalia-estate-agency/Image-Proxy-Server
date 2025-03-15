@@ -152,21 +152,37 @@ app.post("/convertMultiple", async (req, res) => {
     return res.status(400).json({ error: "At least one image URL is required" });
   }
 
-  // First, map the imageUrls to promises (async function returns promises)
-  const base64Images = await Promise.all(
-  imageUrls.map(async (url) => {
-    const base64 = await pictureToBase64(url); // Fetch base64 for each image
-    return base64;  // Return only the base64 value
-  })
-  );
+  try {
+    // Convert each image URL to Base64
+    const base64Images = await Promise.all(
+      imageUrls.map(async (url) => {
+        try {
+          const base64 = await imageToBase64(url);
+          //console.log("url :::: " + JSON.stringify(url));
+          //console.log("base64 :::: " + JSON.stringify(base64));
 
-  // Join the base64 values into a single comma-separated string
-  const base64String = base64Images.join(',');
+          return { bytes: base64 }; 
+        } catch (error) {
+          console.error(`Failed to convert image: ${url}`, error.message);
+          return { url, error: "Failed to convert image" };
+        }
+      })
+    );
 
-  // Send the response as a JSON object
-  res.json (base64Images);
+    const base64Object = Object.assign(base64Images);
+    console.log("TYPEOF ::: ", typeof(base64Object));
+    //console.log("BASE64 OBJECT :::: ", JSON.stringify(base64Object));
 
+    // Send the response as a JSON object
+    res.json(base64Object);
+
+    //res.json(base64Images);
+  } catch (error) {
+    console.error("Error processing images:", error.message);
+    res.status(500).json({ error: "Failed to convert images" });
+  }
 });
+
 
 app.post("/converter-multiple", async (req, res) => {
   const { imageUrls } = req.body; // Expecting an array of image URLs
