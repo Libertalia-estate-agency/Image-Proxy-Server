@@ -170,11 +170,13 @@ app.post("/convertMultiple", async (req, res) => {
     );
 
     // Convert array to string (remove brackets)
-    const formattedResponse = base64Images.filter(Boolean).map((obj) => JSON.stringify(obj)).join(",");
+    //const formattedResponse = base64Images.filter(Boolean).map((obj) => JSON.stringify(obj)).join(",");
+    //const formattedResponse = { photos: base64Images.filter(Boolean) };
 
     // Send response as raw JSON text
-    res.send(formattedResponse);
-    //res.json({base64Images});
+
+    // Return only valid base64 objects
+    res.json(base64Images.filter(Boolean));    //res.json({base64Images});
   } catch (error) {
     console.error("Error processing images:", error.message);
     res.status(500).json({ error: "Failed to convert images" });
