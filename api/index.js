@@ -161,13 +161,16 @@ app.post("/convertMultiple", async (req, res) => {
           //console.log("url :::: " + JSON.stringify(url));
           //console.log("base64 :::: " + JSON.stringify(base64));
 
-          return { bytes: base64 }; 
+          return base64;
         } catch (error) {
           console.error(`Failed to convert image: ${url}`, error.message);
           return { url, error: "Failed to convert image" };
         }
       })
     );
+        
+    // Remove null values and join into a single string
+    res.send(base64Images.filter(Boolean).join(","));
 
     // Convert array to string (remove brackets)
     //const formattedResponse = base64Images.filter(Boolean).map((obj) => JSON.stringify(obj)).join(",");
@@ -176,7 +179,7 @@ app.post("/convertMultiple", async (req, res) => {
     // Send response as raw JSON text
 
     // Return only valid base64 objects
-    res.json(base64Images.filter(Boolean));    //res.json({base64Images});
+    //res.json(base64Images.filter(Boolean));    //res.json({base64Images});
   } catch (error) {
     console.error("Error processing images:", error.message);
     res.status(500).json({ error: "Failed to convert images" });
