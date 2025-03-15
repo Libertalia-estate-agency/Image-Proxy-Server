@@ -3,10 +3,10 @@ const axios = require("axios");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const sharp = require("sharp");
+ 
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
 
 // Increase payload limit to handle large images
 app.use(express.json({ limit: "100mb" }));
@@ -157,7 +157,7 @@ app.post("/convertMultiple", async (req, res) => {
     const base64Images = await Promise.all(
       imageUrls.map(async (url) => {
         try {
-          const base64 = await imageToBase64(url);
+          const base64 = await pictureToBase64(url);
           //console.log("url :::: " + JSON.stringify(url));
           //console.log("base64 :::: " + JSON.stringify(base64));
 
@@ -169,14 +169,12 @@ app.post("/convertMultiple", async (req, res) => {
       })
     );
 
-    const base64Object = Object.assign(base64Images);
-    console.log("TYPEOF ::: ", typeof(base64Object));
-    //console.log("BASE64 OBJECT :::: ", JSON.stringify(base64Object));
+    // Convert array to string (remove brackets)
+    const formattedResponse = base64Images.filter(Boolean).map((obj) => JSON.stringify(obj)).join(",");
 
-    // Send the response as a JSON object
-    res.json(base64Object);
-
-    //res.json(base64Images);
+    // Send response as raw JSON text
+    res.send(formattedResponse);
+    //res.json({base64Images});
   } catch (error) {
     console.error("Error processing images:", error.message);
     res.status(500).json({ error: "Failed to convert images" });
