@@ -161,7 +161,7 @@ app.post("/convertMultiple", async (req, res) => {
           //console.log("url :::: " + JSON.stringify(url));
           //console.log("base64 :::: " + JSON.stringify(base64));
 
-          return `{ "bytes": "${base64}" }`;
+          return `{"bytes": "${base64}"}`;
         } catch (error) {
           console.error(`Failed to convert image: ${url}`, error.message);
           return { url, error: "Failed to convert image" };
