@@ -121,6 +121,21 @@ app.post("/convert", async (req, res) => {
   const { imageUrl } = req.body;
   if (!imageUrl) return res.status(400).json({ error: "Image URL is required" });
 
+  const base64Image = await pictureToBase64(imageUrl);
+  if (!base64Image) return res.status(500).json({ error: "Failed to convert image" });
+
+  res.json(base64Image);
+  //res.json({ base64Image });
+});
+
+/**
+ * 
+ * API Route: Convert Profile Picture to Base64
+ */
+app.post("/convertProfile", async (req, res) => {
+  const { imageUrl } = req.body;
+  if (!imageUrl) return res.status(400).json({ error: "Image URL is required" });
+
   const base64Image = await imageToBase64(imageUrl);
   if (!base64Image) return res.status(500).json({ error: "Failed to convert image" });
 
@@ -161,17 +176,20 @@ app.post("/convertMultiple", async (req, res) => {
           //console.log("url :::: " + JSON.stringify(url));
           //console.log("base64 :::: " + JSON.stringify(base64));
 
-          return `{"bytes": "${base64}"}`;
+          return base64 ? { bytes: base64 } : null;
         } catch (error) {
           console.error(`Failed to convert image: ${url}`, error.message);
           return { url, error: "Failed to convert image" };
         }
       })
     );
-        
-    // Remove null values and join into a single string
-    res.send(base64Images.filter(Boolean).join(","));
+      
+    // Filter out null values and return a plain object without an array
+    const result = base64Images.filter(Boolean).reduce((acc, obj) => {
+      return { ...acc, ...obj }; // Merging the objects into a single object without array
+    }, {});
 
+    res.json(result);
     // Convert array to string (remove brackets)
     //const formattedResponse = base64Images.filter(Boolean).map((obj) => JSON.stringify(obj)).join(",");
     //const formattedResponse = { photos: base64Images.filter(Boolean) };
