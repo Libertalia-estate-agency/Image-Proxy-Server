@@ -3,7 +3,8 @@ const axios = require("axios");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const sharp = require("sharp");
- 
+const compression = require("compression");
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,6 +14,7 @@ app.use(express.json({ limit: "100mb" }));
 app.use(cors({ origin :'true' }));
 app.use(bodyParser.json());
 
+app.use(compression());
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");  // Allow all origins (you can restrict this to specific domains for security)
