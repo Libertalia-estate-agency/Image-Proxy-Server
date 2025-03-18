@@ -176,7 +176,7 @@ app.post("/convertMultiple", async (req, res) => {
           //console.log("url :::: " + JSON.stringify(url));
           //console.log("base64 :::: " + JSON.stringify(base64));
 
-          return base64 ? { bytes: base64 } : null;
+          return base64 || null;
         } catch (error) {
           console.error(`Failed to convert image: ${url}`, error.message);
           return { url, error: "Failed to convert image" };
@@ -184,16 +184,29 @@ app.post("/convertMultiple", async (req, res) => {
       })
     );
       
-    // Filter out null values and return a plain object without an array
+    /**
+     * 
+     * // Filter out null values and return a plain object without an array
     const result = base64Images.filter(Boolean).reduce((acc, obj) => {
       return { ...acc, ...obj }; // Merging the objects into a single object without array
     }, {});
 
-    res.json(result);
+     * 
+     */
+    
+    // Filter out null values 
+    const result = base64Images.filter(Boolean);
+    // Send as raw text (pure list of base64)
+    res.send(result.join(","));  // Sends a newline-separated list of base64 strings
+
+    //res.json(result);
+
+    //res.json(result);
     // Convert array to string (remove brackets)
     //const formattedResponse = base64Images.filter(Boolean).map((obj) => JSON.stringify(obj)).join(",");
     //const formattedResponse = { photos: base64Images.filter(Boolean) };
 
+    
     // Send response as raw JSON text
 
     // Return only valid base64 objects
